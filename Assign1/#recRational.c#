@@ -1,0 +1,25 @@
+ tdio.h>
+#include <stdlib.h>
+int arg
+ //if(argc !=2){
+ //  printf("Usage: recRational <number>/n");
+ //  return -1;
+ // }
+ //arg = atio(argv[1]);
+ int main(int argc, char *argv[]){
+printf("hello world");
+return 0;
+}
+
+#include <stdio.h>
+#include <stdlib.h>
+int arg
+//if(argc !=2){
+//  printf("Usage: recRational <number>/n");
+//  return -1;
+// }
+//arg = atio(argv[1]);
+int main(int argc, char *argv[]){
+  printf("hello world");
+  return 0;
+}
