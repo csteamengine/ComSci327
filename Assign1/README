@@ -4,3 +4,6 @@ and the file that lists the hyperbinary sequence up to 100,000,000 numbers is ca
 Iterative List -- "hyperbinary.c"
 
 Recursive -- "recRational.c"
+
+This project does not contain any significant data structures, besides an
+array. It does use recursion as required.
