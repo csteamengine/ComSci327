@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
        printf("%d\n",arr[i]);
     }
   }
-  for(i = sizeof(arr)/sizeof(int);i< sizeof(arr)/sizeof(int)*2;i++){
+  for(i = sizeof(arr)/sizeof(int);i< sizeof(arr)/sizeof(int)*2-1;i++){
     int num;
     if(i%2 == 0){
       num = arr[i/2] + arr[(i/2)+1];
