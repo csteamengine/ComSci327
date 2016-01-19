@@ -1,9 +1,0 @@
-For this project, I started off by doing it in Java and had originally done it all with recursion. After reading through again, I fixed it to only use recursion to list the actual ratio. It lists the hyperbinary sequence iteratively. The recursive file that lists a ratio from a given input is named "recRational.c"
-and the file that lists the hyperbinary sequence up to 100,000,000 numbers is called "hyperbinary.c".
-
-Iterative List -- "hyperbinary.c"
-
-Recursive -- "recRational.c"
-
-This project does not contain any significant data structures, besides an
-array. It does use recursion as required.
