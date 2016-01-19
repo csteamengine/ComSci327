@@ -7,3 +7,4 @@ recRational: recRational.c
 
 clean: 
 	rm -f recRational hyperbinary
+	rm -rf hyperbinary.dSYM recRational.dSYM
