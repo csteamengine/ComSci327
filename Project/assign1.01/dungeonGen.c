@@ -19,5 +19,8 @@ int main(int argc, char *argv[]){
     }
     printf("\n");
   }
+  for(i = 0;i< 3;i++){
+    printf("Text line: %d\n",i+1);
+  }
   return 0;
 }
