@@ -3,14 +3,13 @@
 
 typedef struct Tile{
   char symbol;
-  int locked = 0;
+  int locked;
 }Tile_t;
 typedef struct Room{
     int x_pos;
     int y_pos;
     int x_size;
     int y_size;
-    Tile_t floor[][];
   }Room_t;
 Tile_t grid[21][80];
 int j;
