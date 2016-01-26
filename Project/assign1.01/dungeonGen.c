@@ -17,8 +17,9 @@ int j;
 int l;
 int printDungeon();
 int fillDungeon();
-int addRooms(Room_t *roomPointer,int size);
-int cutCorridor();
+int addRooms(Room_t *roomPoint,int size);
+int cutCorridor(Room_t *rPointer,int size);
+
 int main(int argc, char *argv[]){
   int seed;
   if(argc == 1){
@@ -35,6 +36,7 @@ int main(int argc, char *argv[]){
   printf("Rooms Length: %d\n",random);
   fillDungeon();
   addRooms(roomP,random);
+  printf("Rooms Length: %d\n",sizeof(roomP)/sizeof(Room_t));
   printDungeon();
   return 0;
 }
@@ -116,6 +118,72 @@ int addRooms(Room_t *roomPointer,int size){
   }
   return 0;
 }
-int cutCorridor(){
+int cutCorridor(Room_t *roomPoint,int size){
+  sort(roomPoint,size);
+  int counter = 0;
+  while(counter < size-1){
+    int curX = roomPoint[counter]->x_pos + (roomPoint[counter]->x_size)/2-1;
+    int curY = roomPoint[counter]->y_pos + (roomPoint[counter]->y_size)/2-1;
+    int tarX = roomPoint[counter+1]->x_pos + (roomPoint[counter+ 1]->x_size)/2-1;
+    int tarY = roomPoint[counter+1]->y_pos + (roomPoint[counter+ 1]->y_size)/2-1;
+    if(roomPoint[counter+1]->x_size == 3){
+      tarX = roomPoint[counter+1]->x_pos +1;
+    }
+    if(roomPoint[counter+1]->y_size == 3){
+      tarY = roomPoint[counter+1]->y_pos +1;
+    }
+    while(curX != tarX){
+      
+      if(curX <= tarX){
+	curX++;
+	if(grid[curY][curX].locked == 0){
+	  grid[curY][curX].symbol = '#';
+	  grid[curY][curX].locked = 1;
+	}
+	
+      }else if(curX >= tarX){
+	curX--;
+	if(grid[curY][curX].locked == 0){
+	  grid[curY][curX].symbol = '#';
+	  grid[curY][curX].locked = 1;
+	}
+      }
+    }
+    while(curY != tarY){
+      if(curY <= tarY){
+	curY++;
+	if(grid[curY][curX].locked == 0){
+	  grid[curY][curX].symbol = '#';
+	  grid[curY][curX].locked = 1;
+	}
+      }else if(curY >= tarY){
+	curY--;
+	if(grid[curY][curX].locked == 0){
+	  grid[curY][curX].symbol = '#';
+	  grid[curY][curX].locked = 1;
+	}
+      }
+    }
+    counter++;
+  }
+  return 0;
+}
+int sort(Room_t *rPointer, int size){
+  for(int l = 0;l<size;l++){
+    int low= l;
+    for(int i = l+1;i<size;i++){
+      if(rPointer[i]->x_pos<rPointer[low]->x_pos){
+	low = i;
+      }else if(rPointer[i]->x_pos == rPointer[low]->x_pos){
+	if(rPointer[i]->y_pos < rPointer[low]->y_pos){
+	  low = i;
+	}
+      }
+    }
+    Room_t temp = rPointer[l];
+    rPointer[l] = rPointer[low];
+    rPointer[low] = temp;
+  }
+
   return 0;
 }
