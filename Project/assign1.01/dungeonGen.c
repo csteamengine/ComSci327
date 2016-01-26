@@ -34,10 +34,9 @@ int main(int argc, char *argv[]){
   Room_t *roomP;
   roomP = room;
   printf("Seed: %d\n",seed);
-  printf("Rooms Length: %d\n",random);
   fillDungeon();
   addRooms(roomP,random);
-  printf("Rooms Length: %lu\n",sizeof(roomP)/sizeof(Room_t));
+  cutCorridor(roomP,random);
   printDungeon();
   return 0;
 }
@@ -46,14 +45,15 @@ int printDungeon(){
     for(l = 0;l<80;l++){
       printf("%c",grid[j][l].symbol);
     }
+    printf("\n");
   }
   printf("Text Line 1\nText Line 2\nText Line 3\n");
   return 0;
 }
 int fillDungeon(){
-   for(j = 0;j< 21;j++){
-    for(l = 0;l<80;l++){
-      grid[j][l].symbol = ' ';
+   for(j = 0;j< 80;j++){
+    for(l = 0;l<21;l++){
+      grid[l][j].symbol = ' ';
     }
   }
   return 0;
@@ -123,14 +123,14 @@ int cutCorridor(Room_t *rPoint,int size){
   sort(rPoint,size);
   int counter = 0;
   while(counter < size-1){
-    int curX = (rPoint+counter)->x_pos + ((roomPoint+counter)->x_size)/2-1;
+    int curX = (rPoint+counter)->x_pos + ((rPoint+counter)->x_size)/2-1;
     int curY = (rPoint+counter)->y_pos + ((rPoint+counter)->y_size)/2-1;
     int tarX = (rPoint+counter+1)->x_pos+((rPoint+counter+1)->x_size)/2-1;
     int tarY = (rPoint+counter+1)->y_pos+((rPoint+counter+1)->y_size)/2-1;
     if((rPoint+counter+1)->x_size == 3){
       tarX = (rPoint+counter+1)->x_pos +1;
     }
-    if(roomPoint+counter+1->y_size == 3){
+    if((rPoint+counter+1)->y_size == 3){
       tarY = (rPoint+counter+1)->y_pos +1;
     }
     while(curX != tarX){
