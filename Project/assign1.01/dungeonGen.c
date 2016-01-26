@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct Tile{
   char symbol;
@@ -14,32 +15,108 @@ typedef struct Room{
 Tile_t grid[21][80];
 int j;
 int l;
-void printDungeon();
-void fillDungeon();
+int printDungeon();
+int fillDungeon();
+int addRooms(Room_t *roomPointer);
+int cutCorridor();
 int main(int argc, char *argv[]){
   int seed;
   if(argc == 1){
-   seed = 0;
+    seed = time(NULL);
+    srand(seed);
   }else{
    seed = atoi(argv[1]);
+   srand(seed);
   }
+  int random = rand()%3 +5;
+  Room_t *roomP;
+  roomP = malloc(sizeof(*roomP)*random);
   printf("Seed: %d\n",seed);
+  int size = sizeof(roomP)/sizeof(Room_t);
+  printf("Rooms Length: %d\n",size);
   fillDungeon();
+  addRooms(roomP);
   printDungeon();
   return 0;
 }
-void printDungeon(){
+int printDungeon(){
   for(j = 0;j< 21;j++){
     for(l = 0;l<80;l++){
       printf("%c",grid[j][l].symbol);
     }
   }
   printf("Text Line 1\nText Line 2\nText Line 3\n");
+  return 0;
 }
-void fillDungeon(){
+int fillDungeon(){
    for(j = 0;j< 21;j++){
     for(l = 0;l<80;l++){
-      grid[j][l].symbol = '.';
+      grid[j][l].symbol = ' ';
     }
   }
+  return 0;
+}
+int addRooms(Room_t *roomPointer){
+  int xCoord;
+  int yCoord;
+  int rHeight;
+  int rWidth;
+  int j;
+  for(j = 0;j<sizeof(*roomPointer)/sizeof(Room_t);j++){
+    if(j == 0){
+      rHeight = rand()%7+3;
+      rWidth = rand()%7+3;
+      xCoord = rand()%69+1;
+      yCoord = rand()%10+1;
+      for(int i = xCoord -1;i<xCoord + rWidth +1;i++){
+	for(int k = yCoord -1; k<yCoord + rHeight + 1;k++){
+	  grid[k][i].symbol = '.';
+	  grid[k][i].locked = 1;
+	}
+      }
+    }else{
+      rHeight = rand()%7+3;
+      rWidth = rand()%7+3;
+      xCoord = rand()%69+1;
+      yCoord = rand()%10+1;
+      int counter = 0;
+      int  avail = 1;
+      while(avail==1){
+	counter++;
+	for(int i = xCoord-1;i<=rWidth + xCoord +1;i++){
+	  for(int k = yCoord-1;k<=rHeight + yCoord + 1;k++){
+	    if(grid[k][i].locked ==1){
+	      avail = 1;
+	      xCoord = rand()%69+1;
+	      yCoord = rand()%10+1;
+	      break;
+	    }else{
+	      avail = 0;
+	    }
+	  }
+	  if(avail==1){
+	    break;
+	  }
+	}
+	if(counter > 1000){
+	  rHeight = rand()%7+3;
+	  rWidth = rand()%7+3;
+	}
+      }
+      for(int i = xCoord;i<=xCoord + rWidth;i++){
+	for(int k = yCoord; k<=yCoord + rHeight;k++){
+	  grid[k][i].symbol = '.';
+	  grid[k][i].locked = 1;
+	}
+      }
+    }
+    roomPointer->x_pos = xCoord;
+    roomPointer->y_pos = yCoord;
+    roomPointer->x_size = rWidth;
+    roomPointer->y_size = rHeight;
+  }
+  return 0;
+}
+int cutCorridor(){
+  return 0;
 }

@@ -46,21 +46,15 @@ public class Dungeon {
 		int yCoord;
 		int rHeight;
 		int rWidth;
-		boolean[][] available = new boolean[21][80];
-		for(int i = 0;i<available.length;i++){
-			for(int j = 0; j<available[0].length;j++){
-				available[i][j] = true;
-			}
-		}
 		for(int j = 0;j<rooms.length;j++){
 			if(j == 0){
 				rHeight = rand.nextInt(7)+3;
 				rWidth = rand.nextInt(7)+3;
 				xCoord = rand.nextInt(69)+1;
 				yCoord = rand.nextInt(10)+1;
-				for(int i = xCoord -1; i<=xCoord + rWidth +1;i++){
-					for(int k = yCoord -1;k<=yCoord + rHeight +1;k++){
-						available[k][i] = false;
+				for(int i = xCoord -1;i<xCoord + rWidth +1;i++){
+					for(int k = yCoord -1; k<yCoord + rHeight + 1;k++){
+						dungeon[k][i] = new Floor();
 					}
 				}
 			}else{
@@ -72,9 +66,9 @@ public class Dungeon {
 				boolean avail = false;
 				while(!avail){
 					counter++;
-					for(int i = xCoord;i<=xCoord + rWidth;i++){
-						for(int m = yCoord;m<=yCoord + rHeight;m++){
-							if(available[m][i] == false){
+					for(int i = xCoord-1;i<=rWidth + xCoord +1;i++){
+						for(int k = yCoord-1;k<=rHeight + yCoord + 1;k++){
+							if(dungeon[k][i].getLock()){
 								avail = false;
 								xCoord = rand.nextInt(69)+1;
 								yCoord = rand.nextInt(10)+1;
@@ -92,15 +86,14 @@ public class Dungeon {
 						rWidth = rand.nextInt(7)+3;
 					}
 				}
-				for(int i = xCoord-1; i<=xCoord + rWidth +1;i++){
-					for(int k = yCoord-1;k<=yCoord + rHeight +1;k++){
-						available[k][i] = false;
+				for(int i = xCoord;i<=xCoord + rWidth;i++){
+					for(int k = yCoord; k<=yCoord + rHeight;k++){
+						dungeon[k][i] = new Floor();
 					}
 				}
-			}			
+			}
 			rooms[j] = new Room(rHeight,rWidth,xCoord,yCoord);
 		}
-		insertRooms();
 		
 	}
 	public void cutCorridors(){
@@ -147,26 +140,6 @@ public class Dungeon {
 			}
 			counter++;
 		}
-//		for(int i = 0;i<rooms.length-1;i++){
-//			int num = rand.nextInt(rooms[i].getHeight() -2)+1;
-//			int num1 = rand.nextInt(rooms[i+1].getWidth() -2)+1;
-//			if(rooms[i].getYCoord() + num < rooms[i+1].getYCoord()){  //rooms[i].getYCoord() +num < rooms[i+1].getYCoord()
-//				for(int j = rooms[i].getXCoord() + rooms[i].getWidth();j< rooms[i+1].getXCoord() + num1;j++){  //+ rand.nextInt(rooms[i+1].getWidth())
-//					dungeon[rooms[i].getYCoord()+ num][j] = new Corridor();
-//				}
-//				int test = rooms[i+1].getYCoord();
-//				for(int m = rooms[i].getYCoord() + num;m< test;m++ ){
-//					dungeon[m][rooms[i+1].getXCoord() + num1]= new Corridor();
-//				}
-//			}else if(rooms[i].getYCoord() > rooms[i+1].getYCoord() + rooms[i+1].getHeight()){
-//				for(int j = rooms[i].getXCoord() + rooms[i].getWidth();j< rooms[i+1].getXCoord() + num1;j++){  //+ rand.nextInt(rooms[i+1].getWidth())
-//					dungeon[rooms[i].getYCoord()+ num][j] = new Corridor();
-//				}
-//				for(int k = rooms[i].getYCoord() + num;k<rooms[i+1].getYCoord() + rooms[i+1].getHeight();k++){
-//					dungeon[k][rooms[i+1].getXCoord() + num1] = new Corridor();
-//				}
-//			}
-//		}
 	}
 	public void sort(){
 		for(int l = 0;l<rooms.length;l++){
@@ -188,18 +161,4 @@ public class Dungeon {
 		rooms[spot] = rooms[low];
 		rooms[low] = temp;
 	}
-	public void insertRooms(){
-		for(int i = 0; i< rooms.length;i++){
-			if(rooms[i] == null){
-				break;
-			}
-			for(int k = rooms[i].getXCoord();k<rooms[i].getWidth() + rooms[i].getXCoord();k++){
-				for(int j = rooms[i].getYCoord();j<rooms[i].getHeight() + rooms[i].getYCoord();j++){
-					dungeon[j][k] = new Floor();
-				}
-			}
-			
-		}
-	}
-	
 }
