@@ -19,7 +19,7 @@ int printDungeon();
 int fillDungeon();
 int addRooms(Room_t *roomPoint,int size);
 int cutCorridor(Room_t *rPointer,int size);
-
+int sort(Room_t *rPointer, int size);
 int main(int argc, char *argv[]){
   int seed;
   if(argc == 1){
@@ -30,13 +30,14 @@ int main(int argc, char *argv[]){
    srand(seed);
   }
   int random = rand()%3 +5;
+  Room_t room[random];
   Room_t *roomP;
-  roomP = malloc(sizeof(*roomP)*random);
+  roomP = room;
   printf("Seed: %d\n",seed);
   printf("Rooms Length: %d\n",random);
   fillDungeon();
   addRooms(roomP,random);
-  printf("Rooms Length: %d\n",sizeof(roomP)/sizeof(Room_t));
+  printf("Rooms Length: %lu\n",sizeof(roomP)/sizeof(Room_t));
   printDungeon();
   return 0;
 }
@@ -111,26 +112,26 @@ int addRooms(Room_t *roomPointer,int size){
 	}
       }
     }
-    roomPointer->x_pos = xCoord;
-    roomPointer->y_pos = yCoord;
-    roomPointer->x_size = rWidth;
-    roomPointer->y_size = rHeight;
+    (roomPointer+j)->x_pos = xCoord;
+    (roomPointer+j)->y_pos = yCoord;
+    (roomPointer+j)->x_size = rWidth;
+    (roomPointer+j)->y_size = rHeight;
   }
   return 0;
 }
-int cutCorridor(Room_t *roomPoint,int size){
-  sort(roomPoint,size);
+int cutCorridor(Room_t *rPoint,int size){
+  sort(rPoint,size);
   int counter = 0;
   while(counter < size-1){
-    int curX = roomPoint[counter]->x_pos + (roomPoint[counter]->x_size)/2-1;
-    int curY = roomPoint[counter]->y_pos + (roomPoint[counter]->y_size)/2-1;
-    int tarX = roomPoint[counter+1]->x_pos + (roomPoint[counter+ 1]->x_size)/2-1;
-    int tarY = roomPoint[counter+1]->y_pos + (roomPoint[counter+ 1]->y_size)/2-1;
-    if(roomPoint[counter+1]->x_size == 3){
-      tarX = roomPoint[counter+1]->x_pos +1;
+    int curX = (rPoint+counter)->x_pos + ((roomPoint+counter)->x_size)/2-1;
+    int curY = (rPoint+counter)->y_pos + ((rPoint+counter)->y_size)/2-1;
+    int tarX = (rPoint+counter+1)->x_pos+((rPoint+counter+1)->x_size)/2-1;
+    int tarY = (rPoint+counter+1)->y_pos+((rPoint+counter+1)->y_size)/2-1;
+    if((rPoint+counter+1)->x_size == 3){
+      tarX = (rPoint+counter+1)->x_pos +1;
     }
-    if(roomPoint[counter+1]->y_size == 3){
-      tarY = roomPoint[counter+1]->y_pos +1;
+    if(roomPoint+counter+1->y_size == 3){
+      tarY = (rPoint+counter+1)->y_pos +1;
     }
     while(curX != tarX){
       
@@ -172,17 +173,17 @@ int sort(Room_t *rPointer, int size){
   for(int l = 0;l<size;l++){
     int low= l;
     for(int i = l+1;i<size;i++){
-      if(rPointer[i]->x_pos<rPointer[low]->x_pos){
+      if((rPointer+i)->x_pos<(rPointer+low)->x_pos){
 	low = i;
-      }else if(rPointer[i]->x_pos == rPointer[low]->x_pos){
-	if(rPointer[i]->y_pos < rPointer[low]->y_pos){
+      }else if((rPointer+i)->x_pos == (rPointer+low)->x_pos){
+	if((rPointer+i)->y_pos < (rPointer+low)->y_pos){
 	  low = i;
 	}
       }
     }
-    Room_t temp = rPointer[l];
-    rPointer[l] = rPointer[low];
-    rPointer[low] = temp;
+    Room_t temp = *(rPointer+l);
+    *(rPointer+l) = *(rPointer+low);
+    *(rPointer+low) = temp;
   }
 
   return 0;
