@@ -17,7 +17,7 @@ int j;
 int l;
 int printDungeon();
 int fillDungeon();
-int addRooms(Room_t *roomPointer);
+int addRooms(Room_t *roomPointer,int size);
 int cutCorridor();
 int main(int argc, char *argv[]){
   int seed;
@@ -32,10 +32,9 @@ int main(int argc, char *argv[]){
   Room_t *roomP;
   roomP = malloc(sizeof(*roomP)*random);
   printf("Seed: %d\n",seed);
-  int size = sizeof(roomP)/sizeof(Room_t);
-  printf("Rooms Length: %d\n",size);
+  printf("Rooms Length: %d\n",random);
   fillDungeon();
-  addRooms(roomP);
+  addRooms(roomP,random);
   printDungeon();
   return 0;
 }
@@ -56,13 +55,13 @@ int fillDungeon(){
   }
   return 0;
 }
-int addRooms(Room_t *roomPointer){
+int addRooms(Room_t *roomPointer,int size){
   int xCoord;
   int yCoord;
   int rHeight;
   int rWidth;
   int j;
-  for(j = 0;j<sizeof(*roomPointer)/sizeof(Room_t);j++){
+  for(j = 0;j<size;j++){
     if(j == 0){
       rHeight = rand()%7+3;
       rWidth = rand()%7+3;
