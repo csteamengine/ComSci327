@@ -17,8 +17,7 @@ public class Tile {
 		return symbol+"";
 	}
 	public int getStrength(){
-		//TODO
-		return 0;
+		return strength;
 	}
 	public void setLock(boolean lock){
 		locked = lock;

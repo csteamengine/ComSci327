@@ -51,5 +51,6 @@ bin/
 *.war
 *.ear
 *.iml
-327Java/src/.classpath
-327Java/src/.project
+327Java/.classpath
+327Java/.project
+327Java/.settings
