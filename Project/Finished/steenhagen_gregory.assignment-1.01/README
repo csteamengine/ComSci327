@@ -1,0 +1,13 @@
+My dungeon generator is sort of a mix of the one Jeremy described and an algorithm of my own design. It starts by filling the matrix of 21X80 tiles and then picks a random number of rooms to create. Next it goes to place the rooms, each time it checks every spot of the room matrix and if at any point it overlaps an existing room, it picks a new spot. Once the rooms have been placed, it sorts the room according to x coordinate and conects the centroid of each room with the centroid of the next. I did not make the corridors twisty or anything. 
+
+The dungeon generator is named--
+
+dungeonGen.c
+
+I have the methods--
+sort()
+fillDungeon()
+addRooms()
+printDungeon()
+and 
+main()

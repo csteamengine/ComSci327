@@ -1,0 +1,13 @@
+1-19-2016	began work on dungeon generation. basically got it to print a matrix
+
+1-20-2016	Got a little further and started working on building structs
+
+1-22-2016	Finished structs, made a room, a tile, and a double array of tiles
+
+1-24-2016	Tried to get dynamic memory to work but decided not to use it since 
+		it is not required.
+1-25-2016	FINISHED!!! Had some trouble getting pointers to work, I was trying 
+		to access them the wrong way. was doing *pointer->x_pos and kept 
+		getting errors.
+1-26-2016	Filling out README and finishing documentation, testing on pyrite.
+		As soon as I'm done typing this, its getting zipped up.
