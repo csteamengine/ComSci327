@@ -30,14 +30,14 @@ int main(int argc, char *argv[]){
    srand(seed);
   }
   int random = rand()%3 +5;
-  Room_t room[random];
   Room_t *roomP;
-  roomP = room;
+  roomP = malloc(random * sizeof(Room_t));
   printf("Seed: %d\n",seed);
   fillDungeon();
   addRooms(roomP,random);
   cutCorridor(roomP,random);
   printDungeon();
+  free(roomP);
   return 0;
 }
 int printDungeon(){
