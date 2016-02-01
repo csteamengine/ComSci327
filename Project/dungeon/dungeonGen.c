@@ -2,17 +2,20 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
+#include <stdint.h>\
+  
 typedef struct Tile{
   char symbol;
   int locked;
-  int hardness;
+  uint8_t hardness;
+  uint8_t x_pos;
+  uint8_t y_pos;
 }Tile_t;
 typedef struct Room{
-    int x_pos;
-    int y_pos;
-    int x_size;
-    int y_size;
+    uint8_t x_pos;
+    uint8_t y_pos;
+    uint8_t x_size;
+    uint8_t y_size;
 }Room_t;
 Tile_t grid[21][80];
 int j;
@@ -129,10 +132,10 @@ int fillDungeon(){
   return 0;
 }
 int addRooms(Room_t *roomPointer,int size){
-  int xCoord;
-  int yCoord;
-  int rHeight;
-  int rWidth;
+  uint8_t xCoord;
+  uint8_t yCoord;
+  uint8_t rHeight;
+  uint8_t rWidth;
   int j;
   for(j = 0;j<size;j++){
     if(j == 0){
