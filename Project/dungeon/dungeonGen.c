@@ -1,33 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 typedef struct Tile{
   char symbol;
   int locked;
+  int hardness;
 }Tile_t;
 typedef struct Room{
     int x_pos;
     int y_pos;
     int x_size;
     int y_size;
-  }Room_t;
+}Room_t;
 Tile_t grid[21][80];
 int j;
 int l;
+int seed;
 int printDungeon();
 int fillDungeon();
 int addRooms(Room_t *roomPoint,int size);
 int cutCorridor(Room_t *rPointer,int size);
 int sort(Room_t *rPointer, int size);
-int main(int argc, char *argv[]){
-  int seed;
+int main(int argc, char *argv[]){ 
+  char *save = "--save";
+  char *load = "--load";
   if(argc == 1){
     seed = time(NULL);
     srand(seed);
-  }else{
-   seed = atoi(argv[1]);
-   srand(seed);
+  }else if(argc == 2){
+    char *argv1 = argv [1];
+    if(strcmp(argv1,save) == 0){
+      printf("Input: Save\n");
+      seed = time(NULL);
+      srand(seed);
+    }else if(strcmp(argv1,load) == 0){
+      printf("Input: Load\n");
+      return 0;
+    }else{
+       seed = atoi(argv[1]);
+       srand(seed);
+    }
+  }else if(argc == 3){
+    char *argv2 = argv[2];
+    if(strcmp(argv2,save) == 0){
+      
+    }
   }
   int random = rand()%3 +5;
   Room_t *roomP;
