@@ -24,29 +24,80 @@ int addRooms(Room_t *roomPoint,int size);
 int cutCorridor(Room_t *rPointer,int size);
 int sort(Room_t *rPointer, int size);
 int main(int argc, char *argv[]){ 
+  int SaveBool = 0;   /* False == 0 */
+  int LoadBool = 0;   /* False == 0 */
   char *save = "--save";
   char *load = "--load";
+  
   if(argc == 1){
     seed = time(NULL);
     srand(seed);
   }else if(argc == 2){
     char *argv1 = argv [1];
     if(strcmp(argv1,save) == 0){
-      printf("Input: Save\n");
+      SaveBool =1;
       seed = time(NULL);
       srand(seed);
     }else if(strcmp(argv1,load) == 0){
-      printf("Input: Load\n");
-      return 0;
+      LoadBool = 1;
     }else{
-       seed = atoi(argv[1]);
-       srand(seed);
+      seed = atoi(argv[1]);
+      srand(seed);
     }
   }else if(argc == 3){
-    char *argv2 = argv[2];
-    if(strcmp(argv2,save) == 0){
-      
+    char *argv1 = argv [1];
+    char *argv2 = argv [2];
+    if(argv[1][0] == '-' && argv[2][0] == '-'){
+      if(strcmp(argv1,save) == 0 && strcmp(argv2,load)==0){
+	SaveBool = 1; /*Will load a dungeon from file and then save it again*/
+	LoadBool = 1;
+      }else if(strcmp(argv1,load)== 0 && strcmp(argv2,save) == 0){
+	SaveBool = 1;  /*Will load a dungeon from file and then save it again*/
+	LoadBool = 1;
+      }else{
+	fprintf(stderr,"Incorrect Command Line Parameters\n");
+	return -1;
+      } 
+    }else if(argv[1][0] == '-' && argv[2][0] != '-'){
+      if(strcmp(argv1,save) == 0){
+	SaveBool =1;
+	seed = atoi(argv[2]);
+	srand(seed);
+      }else if(strcmp(argv1,load) == 0){
+	LoadBool = 1;
+	/*Make filename argv2*/
+      }else{
+	fprintf(stderr,"Incorrect Command Line Parameters\n");
+	return -1;
+      }
+    }else if(argv[1][0] != '-' && argv[2][0] == '-'){
+      if(strcmp(argv2,save) == 0){
+	SaveBool =1;
+	seed = atoi(argv[1]);
+	srand(seed);
+      }else if(strcmp(argv1,load) == 0){
+	LoadBool = 1;
+	/*Make file name argv1*/
+      }else{
+	fprintf(stderr,"Incorrect Command Line Parameters\n");
+	return -1;
+      }
+    }else{
+      fprintf(stderr, "Incorrect Command Line Parameters\n");
+      return -1;
     }
+  }else if(argc == 4){
+    printf("Load a file %s and save it again\n",argv[3]);
+  }
+
+  if(SaveBool == 1){
+    printf("Save switch activated\n");
+  }
+  if(LoadBool == 1){
+    printf("Load switch activated\n");
+    return 0; /*Just for now. Will eventually open a file instead of creating
+		new dungeon with 0 as the seed*/
+    
   }
   int random = rand()%3 +5;
   Room_t *roomP;
