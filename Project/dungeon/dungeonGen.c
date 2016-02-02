@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <endian.h>
 #include <string.h>
-#include <stdint.h>\
+#include <stdint.h>
   
 typedef struct Tile{
   char symbol;
@@ -26,6 +27,8 @@ int fillDungeon();
 int addRooms(Room_t *roomPoint,int size);
 int cutCorridor(Room_t *rPointer,int size);
 int sort(Room_t *rPointer, int size);
+int loadDungeon(Room_t *roomPoint);
+int countRooms();
 int main(int argc, char *argv[]){ 
   int SaveBool = 0;   /* False == 0 */
   int LoadBool = 0;   /* False == 0 */
@@ -97,20 +100,110 @@ int main(int argc, char *argv[]){
     printf("Save switch activated\n");
   }
   if(LoadBool == 1){
-    printf("Load switch activated\n");
+    Room_t *roomP;
+    int numRooms = countRooms();
+    roomP = malloc(numRooms * sizeof(Room_t));
+    loadDungeon(roomP);
+    free(roomP);
     return 0; /*Just for now. Will eventually open a file instead of creating
 		new dungeon with 0 as the seed*/
-    
+  }else{
+     int random = rand()%3 +5;
+     Room_t *roomP;
+     roomP = malloc(random * sizeof(Room_t));
+     fillDungeon();
+     addRooms(roomP,random);
+     cutCorridor(roomP,random);
+     free(roomP);
   }
-  int random = rand()%3 +5;
-  Room_t *roomP;
-  roomP = malloc(random * sizeof(Room_t));
   printf("Seed: %d\n",seed);
-  fillDungeon();
-  addRooms(roomP,random);
-  cutCorridor(roomP,random);
   printDungeon();
-  free(roomP);
+  return 0;
+}
+int countRooms(){
+  int i;
+  int j;
+  uint8_t x_pos;
+  uint8_t y_pos;
+  uint8_t prevX;
+  uint8_t prevY;
+  uint8_t x_size;
+  uint8_t y_size;
+  uint8_t temp;
+  int numRooms = 0;
+  char RLG327[7];
+  uint32_t fileSize;
+  uint32_t fileVersion;
+  FILE *dungeonFile;
+  dungeonFile = fopen(strcat(getenv("HOME"),"/.rlg327/smile.rlg327"),"r");
+  fread(RLG327, 1, 6, dungeonFile); //file type marker
+  fread(&fileVersion,sizeof(fileVersion),1,dungeonFile); //File Version
+  fread(&fileSize,sizeof(fileSize),1,dungeonFile);  //File Size
+  for(i = 1;i< 20;i++){
+    for(j=1;j<79;j++){
+      fread(&temp,sizeof(temp),1,dungeonFile);  //Cell hardness,not border
+    }
+  }
+  while(1){
+    prevX = x_pos;
+    prevY = y_pos;
+    fread(&x_pos,sizeof(x_pos),1,dungeonFile);
+    fread(&y_pos,sizeof(y_pos),1,dungeonFile);
+    fread(&x_size,sizeof(x_size),1,dungeonFile);
+    fread(&y_size,sizeof(y_size),1,dungeonFile);
+    if(x_pos == prevX && y_pos == prevY){
+      break;
+    }
+    numRooms++;
+  }
+  return numRooms;
+}
+int loadDungeon(Room_t *roomP){
+  int i;
+  int j;
+  int count =0;
+  uint8_t x_pos;
+  uint8_t y_pos;
+  uint8_t prevX;
+  uint8_t prevY;
+  uint8_t x_size;
+  uint8_t y_size;
+  uint8_t hardness;
+  char RLG327[7];
+  uint32_t fileSize;
+  uint32_t fileVersion;
+  FILE *dungeonFile;
+  dungeonFile = fopen(strcat(getenv("HOME"),"/.rlg327/smile.rlg327"),"r");
+  fread(RLG327, 1, 6, dungeonFile); //file type marker
+  fread(&fileVersion,sizeof(fileVersion),1,dungeonFile); //File Version
+  fread(&fileSize,sizeof(fileSize),1,dungeonFile);  //File Size
+  fileSize = htobe32(fileSize);  //FileSize conversion
+  for(i = 1;i< 20;i++){
+    for(j=1;j<79;j++){
+      fread(&hardness,sizeof(hardness),1,dungeonFile);  //Cell hardness
+      grid[i][j].hardness = hardness;
+    }
+  }
+  while(1){
+    prevX = x_pos;
+    prevY = y_pos;
+    fread(&x_pos,sizeof(x_pos),1,dungeonFile);
+    fread(&y_pos,sizeof(y_pos),1,dungeonFile);
+    fread(&x_size,sizeof(x_size),1,dungeonFile);
+    fread(&y_size,sizeof(y_size),1,dungeonFile);
+    if(x_pos == prevX && y_pos == prevY){
+      break;
+    }
+    (roomP+count)->x_pos = x_pos;
+    (roomP+count)->y_pos = y_pos;
+    (roomP+count)->x_size = x_size;
+    (roomP+count)->y_size = y_size;
+    for(i = y_pos;i<y_pos+y_size;i++){
+      for(j=x_pos;j<x_pos+x_size;j++){
+	grid[i][j].symbol = '.';
+      }
+    }
+  }
   return 0;
 }
 int printDungeon(){
