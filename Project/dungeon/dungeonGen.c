@@ -343,7 +343,7 @@ int cutCorridor(){
 	  grid[curY][curX].symbol = '#';
 	  grid[curY][curX].locked = 1;
 	  grid[curY][curX].hardness = 0;
-	}
+     	}
       }else if(curY >= tarY){
 	curY--;
 	if(grid[curY][curX].locked == 0){

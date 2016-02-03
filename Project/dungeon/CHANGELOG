@@ -1,9 +1,16 @@
 CHANGELOG Assignment 1.03
-	
+
 Day 1: Tuesday 2/2/2016
 	Just finished assign1.02 and have been going through my code making it look better and work better.
 	I got the iterations to work correctly and to correctly render the rooms.
 	Getting ready to start Path Finding algorithm although I am not looking forward to it.
 
 	Also added rm -f dungeonGen.c~ to my make clean because for some reason it kept generating those.
+
+Day 2: Wednesday 2/3/2016
+	Need to decide if I want to sort the rooms before cutting the corridors or not. When I sort them, only one corridor connects
+	each room, but they often have turns or corners in them. However, when I don't sort them first, there isn't very many corners,
+	but there are a lot more corridors.
+
+	Working on cleaning up my working code before I start adding to it. Otherwise it'll just become a huge mess.
 	
