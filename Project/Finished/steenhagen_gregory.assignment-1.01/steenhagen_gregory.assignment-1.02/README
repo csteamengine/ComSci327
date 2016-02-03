@@ -1,0 +1,14 @@
+My file is named dungeonGen.c and the binary is dungeonGen. To load a file, I followed the specs so you type ./dungeonGen --load <fileName>. Where filename is the name of the file you want to load. I havent gotten save to work yet but I am still working on it. Need to get rid of some seg faults.
+
+File Names
+dungeonGen.c
+
+Binary
+dungeonGen
+
+To Run
+./dungeonGen
+or
+./dungeonGen --load <filename>
+or
+./dungeonGen --load --save <filename>

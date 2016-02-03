@@ -1,0 +1,11 @@
+	1-26-16 Started working on reading a file
+	1-27-16 still working on reading a file, can figure out the file size conversion
+	1-28-16 figured out file size conversion and can read the whole file, now need to convert what I've read into usable code.
+	1-29-16 Still working on the load part. Got dungeon to generate the things it needs to, but having trouble with seg faults due to already open file.
+	1-30-16 got load done for the most part, can open and read any practice file.
+	1-31-16 working on save feature. lots of seg faults for some reason.
+	2-1-16 still working on save, having trouble, need to get it to open the file without seg fault.
+	2-2-16 havent gotten save to work but I'm submitting as is with load working.
+	2-2-16 Got save and load to start working together. Not perfect, but close.
+	
+	
