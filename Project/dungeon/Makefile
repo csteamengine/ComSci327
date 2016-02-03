@@ -5,4 +5,5 @@ dungeonGen: dungeonGen.c
 
 clean:
 	rm -f dungeonGen
+	rm -r dungeonGen.c~
 	rm -rf dungeonGen.dSYM

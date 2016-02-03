@@ -5,4 +5,5 @@ Day 1: Tuesday 2/2/2016
 	I got the iterations to work correctly and to correctly render the rooms.
 	Getting ready to start Path Finding algorithm although I am not looking forward to it.
 
+	Also added rm -f dungeonGen.c~ to my make clean because for some reason it kept generating those.
 	
