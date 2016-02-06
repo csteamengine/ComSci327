@@ -8,9 +8,21 @@ Day 1: Tuesday 2/2/2016
 	Also added rm -f dungeonGen.c~ to my make clean because for some reason it kept generating those.
 
 Day 2: Wednesday 2/3/2016
-	Need to decide if I want to sort the rooms before cutting the corridors or not. When I sort them, only one corridor connects
-	each room, but they often have turns or corners in them. However, when I don't sort them first, there isn't very many corners,
+	Need to decide if I want to sort the rooms before cutting the corridors or not. When I sort them, only one 	corridor connects
+	each room, but they often have turns or corners in them. However, when I don't sort them first, there isn'	t very many corners,
 	but there are a lot more corridors.
 
-	Working on cleaning up my working code before I start adding to it. Otherwise it'll just become a huge mess.
-	
+	Working on cleaning up my working code before I start adding to it. Otherwise it'll just become a huge mes		s.
+
+Day 3: Friday 2/5/2016
+	Seperating the files and using header files. I got the program to run correctly using rlg327 and
+	dungeonGen.c/h. It works pretty well and is a lot cleaner.
+
+	Still going through my code to make it prettier, but looks a lot better with the files seperated.
+
+	Got player character to generate in random spots in a random room. It picks a random room, and a random
+	location in that room to place the player. It does not get saved because I was worried that it would
+	fail to work with other peoples saves. Starting to work on Dijkstra's algorithm now.
+
+	Messing with binheap and how to implement it using a priority queue. Not sure what a Priority queue is
+	or how it functions.
