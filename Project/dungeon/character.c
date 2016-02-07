@@ -13,7 +13,6 @@ int createPlayer(){
   player.x_pos = rXPos + (rand()%rWidth);
   player.y_pos = rYPos + (rand()%rHeight);
   grid[player.y_pos][player.x_pos] = player;
-  printf("%c\n",grid[player.y_pos][player.x_pos].symbol);
   return 0;
 }
 int NTPathFind(){
