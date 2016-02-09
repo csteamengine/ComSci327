@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "dungeonGen.h"
 #include "character.h"
+#include "binheap.h"
 int main(int argc, char *argv[]){
   int SaveBool = 0;   /* False == 0 */
   int LoadBool = 0;   /* False == 0 */

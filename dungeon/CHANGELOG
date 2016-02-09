@@ -26,3 +26,16 @@ Day 3: Friday 2/5/2016
 
 	Messing with binheap and how to implement it using a priority queue. Not sure what a Priority queue is
 	or how it functions.
+
+Day 4: Saturday 2/6/2016
+	Still working on getting binheap to work. It is having trouble with binheap_node_t
+
+Day 5: Sunday 2/7/2016
+	Got binheap to work. Had to change the way binheap_node_t was defined in binheap.h. I don't know why I had to do this and everyone else didn't but oh well.
+	Binheap works now so that is good. Still need to figure out what to do with a binheap.
+
+Day 6: Monday 2/8/2016
+	Working on implementation of binheap and Dijkstra's Algorithm. trying to study up on what Dijkstra's actually is doing. I know I need
+	to check all the neighbors and stuff but not sure how to do it correctly.
+
+	Also adding some extra features like character color.

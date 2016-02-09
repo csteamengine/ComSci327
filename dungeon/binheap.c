@@ -3,12 +3,9 @@
 
 #include "binheap.h"
 
-#define BINHEAP_START_SIZE 128
+#define BINHEAP_START_SIZE 128;
 
-struct binheap_node {
-  void *datum;
-  uint32_t index;
-};
+
 
 static void percolate_up(binheap_t *h, uint32_t index)
 {
@@ -47,11 +44,13 @@ static void percolate_down(binheap_t *h, uint32_t index)
     }
   }
 }
-
-static void heapify(binheap_t *h)
+void heapify(binheap_t *h)
 {
   uint32_t i;
 
+
+  
+  
   for (i = (h->size + 1) / 2; i; i--) {
     percolate_down(h, i);
   }
@@ -68,6 +67,7 @@ void binheap_init(binheap_t *h,
   h->datum_delete = datum_delete;
 
   h->array = calloc(h->array_size, sizeof (*h->array));
+  heapify(h);
 }
 
 void binheap_init_from_array(binheap_t *h,

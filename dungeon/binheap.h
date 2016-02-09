@@ -6,9 +6,10 @@ extern "C" {
   # endif
 
   # include <stdint.h>
-
-  struct binheap_hode;
-  typedef struct binheap_node binheap_node_t;
+  typedef struct binheap_node{
+    void *datum;
+    uint32_t index;
+  }binheap_node_t;
 
   typedef struct binheap {
     binheap_node_t **array;
