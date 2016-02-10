@@ -1,5 +1,5 @@
 rlg327: dungeonGen.o rlg327.o binheap.o character.o
-	gcc dungeonGen.o binheap.o character.o rlg327.o -o rlg327
+	gcc dungeonGen.o binheap.o character.o rlg327.o -o rlg327 -lm
 dungeonGen.o: dungeonGen.c dungeonGen.h
 	gcc -Wall -Werror -g dungeonGen.c -c
 binheap.o: binheap.c binheap.h

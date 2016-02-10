@@ -17,7 +17,7 @@ Point_t NTDist[21][80];
 Point_t TDist[21][80];
 void printGrid(int givenGrid[21][80]);
 char convertInt(int i);
-double dist(Point_t a, Point_t b);
+int dist(Point_t a, Point_t b);
 int createPlayer(){
   int room = rand()%roomSize;
   int rHeight = roomP[room].y_size;
@@ -82,7 +82,13 @@ int NTPathFind(){
     printf("%d\n",((Point_t*)binheap_remove_min(&h))->dist);
     
   }
-  
+  Point_t a;
+  Point_t b;
+  a.x_pos = 5;
+  a.y_pos = 15;
+  b.x_pos = 11;
+  b.y_pos = 30;
+  printf("%d\n",dist(a,b));
   return 0;
 
 }
@@ -90,11 +96,10 @@ int TPathFind(){
   printf("Will print out the Tunneling matrix of distances\n");
   return 0;
 }
-double dist(Point_t a, Point_t b){
-  double distance;
-  double num = (double)(a.x_pos - b.x_pos) * (a.x_pos - b.x_pos) + (a.y_pos-b.y_pos) *(a.y_pos-b.y_pos); 
-  distance = sqrt(num);
-  return distance;
+int dist(Point_t a, Point_t b){
+  double distance; 
+  distance = sqrt((a.x_pos - b.x_pos) * (a.x_pos - b.x_pos) + (a.y_pos-b.y_pos) *(a.y_pos-b.y_pos));
+  return (int) distance;
 }
 void Printgrid(int givenGrid[21][80]){
   int i;
