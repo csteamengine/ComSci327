@@ -6,9 +6,17 @@
 
 
 Tile_t player;
-void printGrid();
-void printNegGrid();
-Tile_t negGrid[21][80];
+typedef struct Point{
+  int dist;
+  int x_pos;
+  int y_pos;
+  int visited;
+}Point_t;
+Point_t NTDist[21][80];
+Point_t TDist[21][80];
+void printGrid(int givenGrid[21][80]);
+char convertInt(int i);
+
 int createPlayer(){
   int room = rand()%roomSize;
   int rHeight = roomP[room].y_size;
@@ -18,71 +26,82 @@ int createPlayer(){
   player.symbol = '@';
   player.x_pos = rXPos + (rand()%rWidth);
   player.y_pos = rYPos + (rand()%rHeight);
+  player.locked = 1;
   grid[player.y_pos][player.x_pos] = player;
   return 0;
 }
 
-int32_t compare_int(const void *key, const void *with)
+int32_t compare(const void *keyG,const void *withG)
 {
-  return *(const int32_t *) key - *(const int32_t *) with;
+  return ((Point_t*)keyG)->dist - ((Point_t *)withG)->dist;
 }
 
 int NTPathFind(){
-  
-  
+  int i;
+  int j;
   binheap_t h;
-  int32_t a[15];
-  for(int i = 0;i< 15;i++){
-    a[i] = rand()%5 +1;
-  }
-  //binheap_init_from_array(&h,a,sizeof(*a),10,compare_int,NULL);
-  binheap_init(&h,compare_int,NULL);
-  for(int i = 0;i<15;i++){
-    binheap_insert(&h,a+i);
-  }
-  for(int i = 0;i<15;i++){
-    printf("%4d\n",*(int *) h.array[i]->datum);
-  }
-  //printf("%4d\n",*(int *) binheap_peek_min(&h));
-  
-  //printf("Will print out the Non-Tunneling matrix of distances\n");
-
-  for(int i = 0;i<21;i++){
-    for(int j = 0;j<80;j++){
-      if(grid[i][j].locked == 0){
-	negGrid[i][j].symbol='.';
+  Point_t pArr[1680];
+  binheap_init(&h,compare,NULL);
+  printf("%d:%d\n",player.x_pos,player.y_pos);
+  for(i= 0;i<21;i++){
+    for(j=0;j<80;j++){
+      if(i == player.y_pos && j == player.x_pos){
+	pArr[i*j].dist= 0;
+	pArr[i*j].x_pos = j;
+	pArr[i*j].y_pos = i;
+	pArr[i*j].visited = 1;
       }else{
-	negGrid[i][j].symbol = ' ';
+	pArr[i*j].dist = 1;
+	pArr[i*j].x_pos = j;
+	pArr[i*j].y_pos = i;
+	pArr[i*j].visited =0;
       }
+      binheap_insert(&h,(pArr+(i*j)));
     }
   }
-  printNegGrid();
+  for(i = 0;i<21;i++){
+    for(j = 0;j<80;j++){
+      Point_t *point = ((Point_t*)binheap_remove_min(&h));
+      if(point->dist == 0){
+	printf("\n\n");
+      }
+      printf("%d",point->dist);
+    }
+    printf("\n");
+  }
   return 0;
-  
+
 }
 int TPathFind(){
   printf("Will print out the Tunneling matrix of distances\n");
   return 0;
 }
-void printGrid(){
+void Printgrid(int givenGrid[21][80]){
   int i;
   int j;
+  
   for(i=0;i<21;i++){
     for(j=0;j<80;j++){
-      printf("%d",grid[i][j].symbol);
+      printf("%c",convertInt(givenGrid[i][j]));
     }
     printf("\n");
   }
   
 }
-void printNegGrid(){
-  int i;
-  int j;
-  for(i=0;i<21;i++){
-    for(j=0;j<80;j++){
-      printf("%c",negGrid[i][j].symbol);
-    }
-    printf("\n");
+char convertInt(int i){
+  char temp;
+  int j = i;
+  if(i<10){
+    j+=48;
+  }else if(i<36){
+    j+=87;
+  }else if(i<62){
+    j-=36;
+    j+=65;
+  }else{
+    j = 32;
   }
+  temp = j;
+  return temp;
 }
 

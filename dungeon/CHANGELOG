@@ -39,3 +39,8 @@ Day 6: Monday 2/8/2016
 	to check all the neighbors and stuff but not sure how to do it correctly.
 
 	Also adding some extra features like character color.
+
+Day 7: Tuesday 2/9/16
+	Started adding the Dijkstra's algorithm in using the binheap. Having trouble getting it to add the right
+	value. For some reason every time I add a point, it gets wiped and replaces it with 255. I tried storing the
+	points in an array but that didn't work.
