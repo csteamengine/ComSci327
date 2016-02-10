@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "dungeonGen.h"
 #include "binheap.h"
 
@@ -16,7 +17,7 @@ Point_t NTDist[21][80];
 Point_t TDist[21][80];
 void printGrid(int givenGrid[21][80]);
 char convertInt(int i);
-
+double dist(Point_t a, Point_t b);
 int createPlayer(){
   int room = rand()%roomSize;
   int rHeight = roomP[room].y_size;
@@ -41,40 +42,59 @@ int NTPathFind(){
   int j;
   binheap_t h;
   Point_t pArr[1680];
+  int counter =0;
   binheap_init(&h,compare,NULL);
-  printf("%d:%d\n",player.x_pos,player.y_pos);
+  /*Fills the binheap with all of the grid items*/
   for(i= 0;i<21;i++){
     for(j=0;j<80;j++){
       if(i == player.y_pos && j == player.x_pos){
-	pArr[i*j].dist= 0;
-	pArr[i*j].x_pos = j;
-	pArr[i*j].y_pos = i;
-	pArr[i*j].visited = 1;
+	pArr[counter].dist= 0;
+	pArr[counter].x_pos = j;
+	pArr[counter].y_pos = i;
+	pArr[counter].visited = 1;
       }else{
-	pArr[i*j].dist = 1;
-	pArr[i*j].x_pos = j;
-	pArr[i*j].y_pos = i;
-	pArr[i*j].visited =0;
+	pArr[counter].dist = 255;
+	pArr[counter].x_pos = j;
+	pArr[counter].y_pos = i;
+	pArr[counter].visited =0;
       }
-      binheap_insert(&h,(pArr+(i*j)));
+      binheap_insert(&h,(pArr+counter));
+      counter++;
     }
   }
-  for(i = 0;i<21;i++){
-    for(j = 0;j<80;j++){
-      Point_t *point = ((Point_t*)binheap_remove_min(&h));
-      if(point->dist == 0){
-	printf("\n\n");
-      }
-      printf("%d",point->dist);
-    }
-    printf("\n");
+  
+  /*Simply for testing purposes. It was to make sure the binheap had all the correct values in it.*/
+  
+  /* for(i = 0;i<21;i++){ */
+  /*   for(j = 0;j<80;j++){ */
+  /*     Point_t *point = ((Point_t*)binheap_remove_min(&h)); */
+  /*     if(point->dist == 0){ */
+  /* 	printf("\n\n"); */
+  /*     } */
+  /*     printf("%d",point->dist); */
+  /*   } */
+  /*   printf("\n"); */
+  /* } */
+
+  /*Main Loop for Non-Tunneling Path Finding*/
+  while(binheap_peek_min(&h)){
+    binheap_remove_min(&h);
+    printf("%d\n",((Point_t*)binheap_remove_min(&h))->dist);
+    
   }
+  
   return 0;
 
 }
 int TPathFind(){
   printf("Will print out the Tunneling matrix of distances\n");
   return 0;
+}
+double dist(Point_t a, Point_t b){
+  double distance;
+  double num = (double)(a.x_pos - b.x_pos) * (a.x_pos - b.x_pos) + (a.y_pos-b.y_pos) *(a.y_pos-b.y_pos); 
+  distance = sqrt(num);
+  return distance;
 }
 void Printgrid(int givenGrid[21][80]){
   int i;

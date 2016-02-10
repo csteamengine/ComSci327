@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <math.h>
 #include "dungeonGen.h"
 #include "character.h"
 #include "binheap.h"

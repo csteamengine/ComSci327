@@ -1,6 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include <math.h>
 Tile_t player;
 typedef struct Point{
   int dist;
