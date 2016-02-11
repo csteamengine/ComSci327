@@ -14,10 +14,10 @@ typedef struct Point{
   int visited;
 }Point_t;
 Point_t NTDist[21][80];
-Point_t TDist[21][80];
-void printGrid(int givenGrid[21][80]);
+Point_t TDist[21][80];y
 char convertInt(int i);
 int dist(Point_t a, Point_t b);
+void printGrid();
 int createPlayer(){
   int room = rand()%roomSize;
   int rHeight = roomP[room].y_size;
@@ -41,54 +41,56 @@ int NTPathFind(){
   int i;
   int j;
   binheap_t h;
-  Point_t pArr[1680];
-  int counter =0;
   binheap_init(&h,compare,NULL);
   /*Fills the binheap with all of the grid items*/
   for(i= 0;i<21;i++){
     for(j=0;j<80;j++){
       if(i == player.y_pos && j == player.x_pos){
-	pArr[counter].dist= 0;
-	pArr[counter].x_pos = j;
-	pArr[counter].y_pos = i;
-	pArr[counter].visited = 1;
+	NTDist[i][j].dist= 0;
+	NTDist[i][j].x_pos = j;
+	NTDist[i][j].y_pos = i;
+	NTDist[i][j].visited = 1;
       }else{
-	pArr[counter].dist = 255;
-	pArr[counter].x_pos = j;
-	pArr[counter].y_pos = i;
-	pArr[counter].visited =0;
+	NTDist[i][j].dist = 255;
+	NTDist[i][j].x_pos = j;
+        NTDist[i][j].y_pos = i;
+	NTDist[i][j].visited =0;
       }
-      binheap_insert(&h,(pArr+counter));
-      counter++;
+      binheap_insert(&h,&(NTDist[i][j]));
     }
   }
-  
-  /*Simply for testing purposes. It was to make sure the binheap had all the correct values in it.*/
-  
-  /* for(i = 0;i<21;i++){ */
-  /*   for(j = 0;j<80;j++){ */
-  /*     Point_t *point = ((Point_t*)binheap_remove_min(&h)); */
-  /*     if(point->dist == 0){ */
-  /* 	printf("\n\n"); */
-  /*     } */
-  /*     printf("%d",point->dist); */
-  /*   } */
-  /*   printf("\n"); */
-  /* } */
 
   /*Main Loop for Non-Tunneling Path Finding*/
+  //pArr[5][5].dist = 5;  This line is how you change values inside the binheap. accessing the array.
+  Point_t source = *((Point_t*)binheap_remove_min(&h));
   while(binheap_peek_min(&h)){
-    binheap_remove_min(&h);
-    printf("%d\n",((Point_t*)binheap_remove_min(&h))->dist);
-    
+    Point_t curr = *((Point_t*)binheap_remove_min(&h));
+    int x = curr.x_pos;
+    int y = curr.y_pos;
+    for(i =y-1;i<=y+1;i++){
+      for(j = x-1;j<=x+1;j++){
+	if(i<0 || j<0 || i>=21 || j>=80 || grid[i][j].hardness > 0){
+	  break;
+	}else{
+	  NTDist[i][j].dist = dist(source,NTDist[i][j]);
+	  if((curr.dist + dist(curr,NTDist[i][j]))<NTDist[i][j].dist){
+	    NTDist[i][j].dist = curr.dist + dist(curr,NTDist[i][j]);
+	  }
+	}
+      }
+    }
+   
   }
-  Point_t a;
-  Point_t b;
-  a.x_pos = 5;
-  a.y_pos = 15;
-  b.x_pos = 11;
-  b.y_pos = 30;
-  printf("%d\n",dist(a,b));
+  printGrid();
+  /* int counter =0; */
+  /* while(binheap_peek_min(&h)){ */
+  /*   printf("%d",((Point_t*)binheap_remove_min(&h))->dist); */
+  /*   counter++; */
+  /*   if(counter == 80){ */
+  /*     printf("\n"); */
+  /*     counter = 0; */
+  /*   } */
+  /* } */
   return 0;
 
 }
@@ -101,17 +103,15 @@ int dist(Point_t a, Point_t b){
   distance = sqrt((a.x_pos - b.x_pos) * (a.x_pos - b.x_pos) + (a.y_pos-b.y_pos) *(a.y_pos-b.y_pos));
   return (int) distance;
 }
-void Printgrid(int givenGrid[21][80]){
+void printGrid(){
   int i;
   int j;
-  
   for(i=0;i<21;i++){
     for(j=0;j<80;j++){
-      printf("%c",convertInt(givenGrid[i][j]));
+      printf("%c",convertInt(NTDist[i][j].dist));
     }
     printf("\n");
   }
-  
 }
 char convertInt(int i){
   char temp;
