@@ -44,3 +44,10 @@ Day 7: Tuesday 2/9/16
 	Started adding the Dijkstra's algorithm in using the binheap. Having trouble getting it to add the right
 	value. For some reason every time I add a point, it gets wiped and replaces it with 255. I tried storing the
 	points in an array but that didn't work.
+
+Day 8: Wednesday 2/10/16
+	Got binheap to work and am successfully calculating distances, but I am not sure that my algorith is completely correct. It
+	gets a valid value, but I don't know if it is accurate.
+
+Day 9: Friday 2/12/16
+	Still working on fixing Dijkstra's. something is wrong with the distance algorithm so it doesn't quite come out right. 

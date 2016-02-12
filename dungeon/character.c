@@ -14,7 +14,7 @@ typedef struct Point{
   int visited;
 }Point_t;
 Point_t NTDist[21][80];
-Point_t TDist[21][80];y
+Point_t TDist[21][80];
 char convertInt(int i);
 int dist(Point_t a, Point_t b);
 void printGrid();
