@@ -6,7 +6,7 @@
 #include "binheap.h"
 
 
-Tile_t player;
+
 typedef struct Point{
   int dist;
   int x_pos;
@@ -19,6 +19,9 @@ binheap_node_t *nodes[21][80];
 char convertInt(int i);
 int dist(Point_t a, Point_t b);
 void printDistanceMaps();
+void moveCharacter();
+int i;
+int j;
 int createPlayer(){
   int room = rand()%roomSize;
   int rHeight = roomP[room].y_size;
@@ -29,7 +32,7 @@ int createPlayer(){
   player.x_pos = rXPos + (rand()%rWidth);
   player.y_pos = rYPos + (rand()%rHeight);
   player.locked = 1;
-  grid[player.y_pos][player.x_pos] = player;
+  //  grid[player.y_pos][player.x_pos] = player;
   return 0;
 }
 
@@ -39,8 +42,6 @@ int32_t compare(const void *keyG,const void *withG)
 }
 
 int NTPathFind(){
-  int i;
-  int j;
   binheap_t h;
   binheap_init(&h,compare,NULL);
   /*Fills the binheap with all of the grid items*/
@@ -91,8 +92,6 @@ int32_t compareTunneling(const void *keyG,const void *withG)
   return (((Point_t*)keyG)->dist + (grid[ky][kx].hardness/60)) - (((Point_t *)withG)->dist + (grid[wy][wx].hardness/60));
 }
 int TPathFind(){
-    int i;
-  int j;
   binheap_t h;
   binheap_init(&h,compareTunneling,NULL);
   /*Fills the binheap with all of the grid items*/
@@ -132,6 +131,38 @@ int TPathFind(){
   }
   return 0;
 }
+void moveCharacter(){
+  int x=player.x_pos;
+  int y = player.y_pos;
+  int count = 0;
+  for(i=y-1;i<=y+1;i++){
+    for(j = x-1;j<=x+1;j++){
+      if(i == y && j == x){
+	
+      }else if(grid[i][j].symbol == '.' || grid[i][j].symbol == '#'){
+	count++;
+      }
+    }
+  }
+  Point_t spots[count];
+  count = 0;
+  for(i=y-1;i<=y+1;i++){
+    for(j = x-1;j<=x+1;j++){
+      if(i == y && j == x){
+	
+      }else if(grid[i][j].symbol == '.' || grid[i][j].symbol == '#'){	
+	spots[count].x_pos = j;
+	spots[count].y_pos = i;
+	count++;
+      }
+    }
+  }
+  
+  count = rand()%count;
+  player.x_pos = spots[count].x_pos;
+  player.y_pos = spots[count].y_pos;
+  
+}
 int dist(Point_t a, Point_t b){
   double distance; 
   distance = sqrt((a.x_pos - b.x_pos) * (a.x_pos - b.x_pos) + (a.y_pos-b.y_pos) *(a.y_pos-b.y_pos));
@@ -145,7 +176,11 @@ void printDistanceMaps(){
       if(i==0 || i==20 || j== 0 || j==79){
 	printf(" ");
       }else{
-	printf("%c",convertInt(NTDist[i][j].dist));
+	if(TDist[i][j].dist == 0){
+	  printf("%s%c%s",GREEN,convertInt(NTDist[i][j].dist),RESET);
+	}else{
+	  printf("%c",convertInt(NTDist[i][j].dist));
+	}
       }
     }
     printf("\n");
@@ -156,7 +191,11 @@ void printDistanceMaps(){
       if(i==0 || i==20 || j== 0 || j==79){
 	printf(" ");
       }else{
-	printf("%c",convertInt(TDist[i][j].dist));
+	if(TDist[i][j].dist == 0){
+	  printf("%s%c%s",GREEN,convertInt(TDist[i][j].dist),RESET);
+	}else{
+	  printf("%c",convertInt(TDist[i][j].dist));
+	}
       }
     }
     printf("\n");

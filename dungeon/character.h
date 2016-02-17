@@ -2,7 +2,9 @@
 #define CHARACTER_H
 
 #include <math.h>
-Tile_t player;
+
+
+
 typedef struct Point{
   int dist;
   int x_pos;
@@ -16,4 +18,5 @@ int NTPathFind();
 int TPathFind();
 void printDistanceMaps();
 char convertInt(int i);
+void moveCharacter();
 #endif

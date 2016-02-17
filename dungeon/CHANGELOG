@@ -1,61 +1,16 @@
-CHANGELOG Assignment 1.03
+Day 1 -- 2/17/16
+	Starting work on assign 1.04. Reading through the assignment pdf and wondering how the heck I
+	am going to get this done :S
+	Gonna start by making the PC move around randomly to neighboring cells.
+	UPDATE: Got player to move around to random locations easily. It just scans all the surrounding
+	locations and records the valid spots(no tunneling) and picks one to move to. It also calculates
+	a distance map each time the grid updates. I am not currently doing anything with the distance maps
+	other than calculating them. Character also cannot stay in the same place. He has to move. He can move
+	back to his previous spot though.
 
-Day 1: Tuesday 2/2/2016
-	Just finished assign1.02 and have been going through my code making it look better and work better.
-	I got the iterations to work correctly and to correctly render the rooms.
-	Getting ready to start Path Finding algorithm although I am not looking forward to it.
-
-	Also added rm -f dungeonGen.c~ to my make clean because for some reason it kept generating those.
-
-Day 2: Wednesday 2/3/2016
-	Need to decide if I want to sort the rooms before cutting the corridors or not. When I sort them, only one 	corridor connects
-	each room, but they often have turns or corners in them. However, when I don't sort them first, there isn'	t very many corners,
-	but there are a lot more corridors.
-
-	Working on cleaning up my working code before I start adding to it. Otherwise it'll just become a huge mes		s.
-
-Day 3: Friday 2/5/2016
-	Seperating the files and using header files. I got the program to run correctly using rlg327 and
-	dungeonGen.c/h. It works pretty well and is a lot cleaner.
-
-	Still going through my code to make it prettier, but looks a lot better with the files seperated.
-
-	Got player character to generate in random spots in a random room. It picks a random room, and a random
-	location in that room to place the player. It does not get saved because I was worried that it would
-	fail to work with other peoples saves. Starting to work on Dijkstra's algorithm now.
-
-	Messing with binheap and how to implement it using a priority queue. Not sure what a Priority queue is
-	or how it functions.
-
-Day 4: Saturday 2/6/2016
-	Still working on getting binheap to work. It is having trouble with binheap_node_t
-
-Day 5: Sunday 2/7/2016
-	Got binheap to work. Had to change the way binheap_node_t was defined in binheap.h. I don't know why I had to do this and everyone else didn't but oh well.
-	Binheap works now so that is good. Still need to figure out what to do with a binheap.
-
-Day 6: Monday 2/8/2016
-	Working on implementation of binheap and Dijkstra's Algorithm. trying to study up on what Dijkstra's actually is doing. I know I need
-	to check all the neighbors and stuff but not sure how to do it correctly.
-
-	Also adding some extra features like character color.
-
-Day 7: Tuesday 2/9/16
-	Started adding the Dijkstra's algorithm in using the binheap. Having trouble getting it to add the right
-	value. For some reason every time I add a point, it gets wiped and replaces it with 255. I tried storing the
-	points in an array but that didn't work.
-
-Day 8: Wednesday 2/10/16
-	Got binheap to work and am successfully calculating distances, but I am not sure that my algorith is completely correct. It
-	gets a valid value, but I don't know if it is accurate.
-
-Day 9: Friday 2/12/16
-	Still working on fixing Dijkstra's. something is wrong with the distance algorithm so it doesn't quite come out right.
-Day 10 Monday 2/15/16
-	Got the NonTunneling implementation complete. Had an array of binheap nodes that I stored pointers to the binheap. That way I can
-	change values inside the binheap and call binheap_decrease_key to have it resort. It works well and now I need to complete the Tunneling monsters.
-	Not feeling it right now.
-
-Day 11 Tuesday 2/16/16 -- My sister's Birthday.
-	Finished the Tunneling monsters distance map as well. Was really easy, I just did the same thing that I did for the NT monsters, and
-	changed the compare method and a few other things. Now I just need to make sure everything is correct, clean my code, and finish the README.
+	Next Goal: Create the --nummon amount of monsters.
+	Finished!
+	Got the command line parameters ironed out so you can input the number of monsters you want to add.
+	it doesnt let you skip the number at this point so if you do --nummon and don't provide a number,
+	it will throw an error.
+	otherwise you can save and load dungeons just as before.
