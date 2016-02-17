@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <math.h>
 #include "character.h"
+
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
 #define YELLOW  "\x1b[33m"
@@ -23,14 +24,15 @@ typedef struct Tile{
   uint8_t hardness;
   uint8_t x_pos;
   uint8_t y_pos;
-  }Tile_t;
+  Character_t *character;
+}Tile_t;
 typedef struct Room{
   uint8_t x_pos;
   uint8_t y_pos;
   uint8_t x_size;
   uint8_t y_size;
-  }Room_t;
-Tile_t player;
+}Room_t;
+Character_t player;
 Tile_t grid[21][80];
 Room_t *roomP;
 int roomSize;
@@ -127,8 +129,8 @@ int saveDungeon(){
 int printDungeon(){
   for(j = 0;j< 21;j++){
     for(l = 0;l<80;l++){
-      if(j == player.y_pos && l == player.x_pos){
-	printf("%s%c%s",GREEN,player.symbol,RESET);
+      if(grid[j][l].character){
+	printf("%s%c%s",grid[j][l].character->color,grid[j][l].character->symbol,RESET);
       }else{
 	printf("%c",grid[j][l].symbol);
       }

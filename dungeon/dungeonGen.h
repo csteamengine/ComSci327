@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <math.h>
+#include "character.h"
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
 #define YELLOW  "\x1b[33m"
@@ -26,6 +27,7 @@ typedef struct Tile{
   uint8_t hardness;
   uint8_t x_pos;
   uint8_t y_pos;
+  Character_t *character;
 }Tile_t;
 typedef struct Room{
   uint8_t x_pos;
@@ -33,7 +35,7 @@ typedef struct Room{
   uint8_t x_size;
   uint8_t y_size;
 }Room_t;
-Tile_t player;
+Character_t player;
 Tile_t grid[21][80];
 Room_t *roomP;
 int roomSize;

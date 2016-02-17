@@ -1,27 +1,12 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
-#include "dungeonGen.h"
+#include "dungeonGen.h" //Cant have his declaration in character.h because it hasnt been created yet
 #include "binheap.h"
 
+//All declarations are made in the header file.
 
-
-typedef struct Point{
-  int dist;
-  int x_pos;
-  int y_pos;
-  int visited;
-}Point_t;
-Point_t NTDist[21][80];
-Point_t TDist[21][80];
-binheap_node_t *nodes[21][80];
-char convertInt(int i);
-int dist(Point_t a, Point_t b);
-void printDistanceMaps();
-void moveCharacter();
-int i;
-int j;
 int createPlayer(){
   int room = rand()%roomSize;
   int rHeight = roomP[room].y_size;
@@ -31,11 +16,13 @@ int createPlayer(){
   player.symbol = '@';
   player.x_pos = rXPos + (rand()%rWidth);
   player.y_pos = rYPos + (rand()%rHeight);
-  player.locked = 1;
-  //  grid[player.y_pos][player.x_pos] = player;
+  strcpy(player.color,GREEN);
+  grid[player.y_pos][player.x_pos].character = &player;
   return 0;
 }
-
+void createMonsters(int numMonsters){
+  
+}
 int32_t compare(const void *keyG,const void *withG)
 {
   return ((Point_t*)keyG)->dist - ((Point_t *)withG)->dist;
@@ -159,9 +146,10 @@ void moveCharacter(){
   }
   
   count = rand()%count;
+  grid[player.y_pos][player.x_pos].character = NULL;
   player.x_pos = spots[count].x_pos;
   player.y_pos = spots[count].y_pos;
-  
+  grid[spots[count].y_pos][spots[count].x_pos].character = &player;
 }
 int dist(Point_t a, Point_t b){
   double distance; 
