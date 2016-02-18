@@ -14,3 +14,11 @@ Day 1 -- 2/17/16
 	it doesnt let you skip the number at this point so if you do --nummon and don't provide a number,
 	it will throw an error.
 	otherwise you can save and load dungeons just as before.
+
+	Also got the main grid cells to point to a character. If the character is null, than it will
+	render using the grid's symbol. If it is not null, it will render using the character's
+	symbol and color.
+
+	Next Goal: Create Monsters
+	Got monsters created and can create them given the input nummon.
+	need to add them to priority queue in order to do takeTurns()

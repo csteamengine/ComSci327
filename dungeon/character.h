@@ -12,15 +12,30 @@ typedef struct Point{
   int y_pos;
   int visited;
 }Point_t;
-
 typedef struct Character{
   char symbol;
   char color[10];
   int x_pos;
   int y_pos;
+  char *name;
+  int speed;
+  int priority;
+  int sequence;
 }Character_t;
+typedef struct Monster{
+  char symbol;
+  char color[10];
+  int x_pos;
+  int y_pos;
+  char *name;
+  int speed;
+  int priority;
+  int sequence;
+}Monster_t;
+
 int i;
 int j;
+Monster_t *monsters;
 Point_t NTDist[21][80];
 Point_t TDist[21][80];
 binheap_node_t *nodes[21][80];

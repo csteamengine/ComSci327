@@ -21,6 +21,44 @@ int createPlayer(){
   return 0;
 }
 void createMonsters(int numMonsters){
+  monsters = malloc(numMonsters*sizeof(Monster_t));
+  for(i=0;i<numMonsters;i++){
+    Monster_t monster;
+    monster.symbol = 'S';
+    monsters[i] = monster;
+  }
+  for(i =0;i<numMonsters;i++){
+    printf("%c\n", monsters[i].symbol);
+  }
+}
+void takeTurns(){
+  binheap_t h;
+  binheap_init(&h,compare,NULL);
+  /*Fills the binheap with all of the grid items*/
+  for(i= 1;i<20;i++){
+    for(j=1;j<79;j++){      
+       if(i == player.y_pos && j == player.x_pos){
+	NTDist[i][j].dist= 0;
+	NTDist[i][j].x_pos = j;
+	NTDist[i][j].y_pos = i;
+	NTDist[i][j].visited = 0;
+	}else{
+	NTDist[i][j].dist = 255;
+	NTDist[i][j].x_pos = j;
+        NTDist[i][j].y_pos = i;
+	NTDist[i][j].visited =0;
+       }
+       nodes[i][j] = binheap_insert(&h,&NTDist[i][j]);      
+    }
+  }
+  Point_t *curr;
+  while((curr = ((Point_t*)binheap_remove_min(&h)))){
+    int x = curr->x_pos;
+    int y = curr->y_pos;
+    nodes[y][x] = NULL;
+    //TODO go through the priority queue and give each monster their turn.
+    
+  }
   
 }
 int32_t compare(const void *keyG,const void *withG)
@@ -116,6 +154,7 @@ int TPathFind(){
       }
     }
   }
+  
   return 0;
 }
 void moveCharacter(){

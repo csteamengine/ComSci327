@@ -18,8 +18,8 @@ int main(int argc, char *argv[]){
   char *save = "--save";
   char *load = "--load";
   char *nummon = "--nummon";
-  int i;
-  int numMonsters;
+  //int i;
+  int numMonsters = 0;
   if(argc == 1){
     seed = time(NULL);
     srand(seed);
@@ -171,11 +171,13 @@ int main(int argc, char *argv[]){
   }
   printf("Seed: %d\n",seed);
   initDungeon();
-  for(i = 0;i<15;i++){
-    sleep(1);
-    updateDungeon();    
-  }
+  /* for(i = 0;i<15;i++){ */
+  /*   sleep(1); */
+  /*   updateDungeon();     */
+  /* } */
+  createMonsters(numMonsters);
   free(roomP);
+  free(monsters);
   return 0;  
 }
 void initDungeon(){
