@@ -1,0 +1,13 @@
+So far the assignment is incomplete. Monsters generate randomly and have attributes, but they dont all move.
+currently a maximum of 3 monsters move when the funtion is called and I don't know what might be causing that.
+Code will run if you use only 2 monsters.
+
+to run the program, type make and then
+
+./rlg327
+
+switches include
+--nummon <int num monsters>
+--save
+--save <filename>
+--load <filename>

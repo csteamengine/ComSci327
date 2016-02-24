@@ -27,7 +27,8 @@ typedef struct Tile{
   uint8_t hardness;
   uint8_t x_pos;
   uint8_t y_pos;
-  Character_t *character;
+  Character_t *PC;
+  Monster_t *monster;
 }Tile_t;
 typedef struct Room{
   uint8_t x_pos;
@@ -39,6 +40,7 @@ Character_t player;
 Tile_t grid[21][80];
 Room_t *roomP;
 int roomSize;
+int numMonsters;
 int j;
 int l;
 int seed;

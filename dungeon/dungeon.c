@@ -24,7 +24,8 @@ typedef struct Tile{
   uint8_t hardness;
   uint8_t x_pos;
   uint8_t y_pos;
-  Character_t *character;
+  Character_t *PC;
+  Monster_t *monster;
 }Tile_t;
 typedef struct Room{
   uint8_t x_pos;
@@ -35,6 +36,7 @@ typedef struct Room{
 Character_t player;
 Tile_t grid[21][80];
 Room_t *roomP;
+int numMonsters;
 int roomSize;
 int j;
 int l;
@@ -129,13 +131,14 @@ int saveDungeon(){
 int printDungeon(){
   for(j = 0;j< 21;j++){
     for(l = 0;l<80;l++){
-      if(grid[j][l].character){
-	printf("%s%c%s",grid[j][l].character->color,grid[j][l].character->symbol,RESET);
+      if(grid[j][l].PC != NULL){
+	printf("%s%c%s",player.color,grid[j][l].PC->symbol,RESET);
+      }else if(grid[j][l].monster != NULL){
+	printf("%s%c%s",BLUE,grid[j][l].monster->symbol,RESET);
       }else{
 	printf("%c",grid[j][l].symbol);
       }
-    }
-      
+    }      
     printf("\n");
   }
   printf("Text Line 1\nText Line 2\nText Line 3\n");
