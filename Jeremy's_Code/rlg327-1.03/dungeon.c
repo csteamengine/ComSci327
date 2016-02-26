@@ -9,15 +9,6 @@
 #include "utils.h"
 #include "heap.h"
 
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define RESET   "\x1b[0m"
-#define LIGHTBLUE "\x1b[1:34m"
-
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
@@ -181,7 +172,6 @@ static int empty_dungeon(dungeon_t *d)
         mapxy(x, y) = ter_wall_immutable;
         hardnessxy(x, y) = 255;
       }
-      charxy(x, y) = NULL;
     }
   }
 
@@ -281,11 +271,11 @@ void render_dungeon(dungeon_t *d)
 {
   pair_t p;
 
-  putchar('\n');
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
     for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-      if (d->character[p[dim_y]][p[dim_x]]) {
-        printf("%s%c%s",LIGHTBLUE,d->character[p[dim_y]][p[dim_x]]->symbol,RESET);
+      if (p[dim_x] ==  d->pc.position[dim_x] &&
+          p[dim_y] ==  d->pc.position[dim_y]) {
+        putchar('@');
       } else {
         switch (mappair(p)) {
         case ter_wall:
@@ -300,6 +290,7 @@ void render_dungeon(dungeon_t *d)
           putchar('#');
           break;
         case ter_debug:
+          printf("Debug character at %d, %d\n", p[dim_y], p[dim_x]);
           putchar('*');
           break;
         }
@@ -307,8 +298,6 @@ void render_dungeon(dungeon_t *d)
     }
     putchar('\n');
   }
-  putchar('\n');
-  putchar('\n');
 }
 
 static char distance_to_char[] = {
@@ -455,16 +444,11 @@ void render_tunnel_distance_map(dungeon_t *d)
 void delete_dungeon(dungeon_t *d)
 {
   free(d->rooms);
-  heap_delete(&d->next_turn);
-  memset(d->character, 0, sizeof (d->character));
 }
 
 void init_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
-
-  memset(&d->next_turn, 0, sizeof (d->next_turn));
-  heap_init(&d->next_turn, compare_characters_by_next_turn, character_delete);
 }
 
 static int write_dungeon_map(dungeon_t *d, FILE *f)

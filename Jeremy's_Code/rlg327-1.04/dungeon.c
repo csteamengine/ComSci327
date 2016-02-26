@@ -9,15 +9,6 @@
 #include "utils.h"
 #include "heap.h"
 
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define RESET   "\x1b[0m"
-#define LIGHTBLUE "\x1b[1:34m"
-
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
@@ -285,7 +276,7 @@ void render_dungeon(dungeon_t *d)
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
     for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
       if (d->character[p[dim_y]][p[dim_x]]) {
-        printf("%s%c%s",LIGHTBLUE,d->character[p[dim_y]][p[dim_x]]->symbol,RESET);
+        putchar(d->character[p[dim_y]][p[dim_x]]->symbol);
       } else {
         switch (mappair(p)) {
         case ter_wall:

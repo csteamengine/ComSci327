@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -ggdb -funroll-loops
 LDFLAGS = 
 
 BIN = rlg327
-OBJS = rlg327.o dungeon.o heap.o utils.o path.o character.o npc.o pc.o move.o
+OBJS = rlg327.o dungeon.o heap.o utils.o path.o
 
 all: $(BIN) etags
 

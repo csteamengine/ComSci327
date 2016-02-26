@@ -1,67 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/time.h>
-#include <unistd.h>
 
 #include "dungeon.h"
 #include "path.h"
-#include "pc.h"
-#include "npc.h"
-#include "move.h"
-
-const char *victory =
-  "\n                                       o\n"
-  "                                      $\"\"$o\n"
-  "                                     $\"  $$\n"
-  "                                      $$$$\n"
-  "                                      o \"$o\n"
-  "                                     o\"  \"$\n"
-  "                oo\"$$$\"  oo$\"$ooo   o$    \"$    ooo\"$oo  $$$\"o\n"
-  "   o o o o    oo\"  o\"      \"o    $$o$\"     o o$\"\"  o$      \"$  "
-  "\"oo   o o o o\n"
-  "   \"$o   \"\"$$$\"   $$         $      \"   o   \"\"    o\"         $"
-  "   \"o$$\"    o$$\n"
-  "     \"\"o       o  $          $\"       $$$$$       o          $  ooo"
-  "     o\"\"\n"
-  "        \"o   $$$$o $o       o$        $$$$$\"       $o        \" $$$$"
-  "   o\"\n"
-  "         \"\"o $$$$o  oo o  o$\"         $$$$$\"        \"o o o o\"  "
-  "\"$$$  $\n"
-  "           \"\" \"$\"     \"\"\"\"\"            \"\"$\"            \""
-  "\"\"      \"\"\" \"\n"
-  "            \"oooooooooooooooooooooooooooooooooooooooooooooooooooooo$\n"
-  "             \"$$$$\"$$$$\" $$$$$$$\"$$$$$$ \" \"$$$$$\"$$$$$$\"  $$$\""
-  "\"$$$$\n"
-  "              $$$oo$$$$   $$$$$$o$$$$$$o\" $$$$$$$$$$$$$$ o$$$$o$$$\"\n"
-  "              $\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\""
-  "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"$\n"
-  "              $\"                                                 \"$\n"
-  "              $\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\""
-  "$\"$\"$\"$\"$\"$\"$\"$\n"
-  "                                   You win!\n\n";
-
-const char *tombstone =
-  "\n\n\n\n                /\"\"\"\"\"/\"\"\"\"\"\"\".\n"
-  "               /     /         \\             __\n"
-  "              /     /           \\            ||\n"
-  "             /____ /  In Loving  \\           ||\n"
-  "            |     |    Memory     |          ||\n"
-  "            |     |               |          ||\n"
-  "            |     |   A. Luser    |          ||\n"
-  "            |     |               |          ||\n"
-  "            |     |     * *   * * |         _||_\n"
-  "            |     |     *\\/* *\\/* |        | TT |\n"
-  "            |     |     *_\\_  /   ...\"\"\"\"\"\"| |"
-  "| |.\"\"....\"\"\"\"\"\"\"\".\"\"\n"
-  "            |     |         \\/..\"\"\"\"\"...\"\"\""
-  "\\ || /.\"\"\".......\"\"\"\"...\n"
-  "            |     |....\"\"\"\"\"\"\"........\"\"\"\"\""
-  "\"^^^^\".......\"\"\"\"\"\"\"\"..\"\n"
-  "            |......\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"......"
-  "..\"\"\"\"\"....\"\"\"\"\"..\"\"...\"\"\".\n\n"
-  "            You're dead.  Better luck in the next life.\n\n\n";
-
-
 
 void usage(char *name)
 {
@@ -84,14 +26,11 @@ int main(int argc, char *argv[])
   char *save_file;
   char *pgm_file;
 
-  memset(&d, 0, sizeof (d));
-
   /* Default behavior: Seed with the time, generate a new dungeon, *
    * and don't write to disk.                                      */
   do_load = do_save = do_image = 0;
   do_seed = 1;
   save_file = NULL;
-  d.max_monsters = 10;
 
   /* The project spec requires '--load' and '--save'.  It's common  *
    * to have short and long forms of most switches (assuming you    *
@@ -155,14 +94,6 @@ int main(int argc, char *argv[])
             pgm_file = argv[++i];
           }
           break;
-        case 'n':
-          if ((!long_arg && argv[i][2]) ||
-              (long_arg && strcmp(argv[i], "-nummon")) ||
-              argc < ++i + 1 /* No more arguments */ ||
-              !sscanf(argv[i], "%hu", &d.max_monsters)) {
-            usage(argv[0]);
-          }
-          break;
         default:
           usage(argv[0]);
         }
@@ -182,8 +113,6 @@ int main(int argc, char *argv[])
   printf("Seed is %ld.\n", seed);
   srand(seed);
 
-  init_dungeon(&d);
-
   if (do_load) {
     read_dungeon(&d, save_file);
   } else if (do_image) {
@@ -192,24 +121,22 @@ int main(int argc, char *argv[])
     gen_dungeon(&d);
   }
 
-  config_pc(&d);
-  gen_monsters(&d, d.max_monsters, 0);
+  i = rand() % d.num_rooms;
+  d.pc.position[dim_x] = (d.rooms[i].position[dim_x] +
+                          (rand() % d.rooms[i].size[dim_x]));
+  d.pc.position[dim_y] = (d.rooms[i].position[dim_y] +
+                          (rand() % d.rooms[i].size[dim_y]));
 
-  while (pc_is_alive(&d) && dungeon_has_npcs(&d)) {
-    render_dungeon(&d);
-    do_moves(&d);
-    usleep(250000);
-  }
   render_dungeon(&d);
+
+  dijkstra(&d);
+  dijkstra_tunnel(&d);
+  render_distance_map(&d);
+  render_tunnel_distance_map(&d);
 
   if (do_save) {
     write_dungeon(&d);
   }
-
-  printf(pc_is_alive(&d) ? victory : tombstone);
-
-  pc_delete(d.pc.pc);
-  delete_dungeon(&d);
 
   return 0;
 }
